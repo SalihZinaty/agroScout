@@ -28,7 +28,7 @@ const db = new sqlite3.Database(filename,sqlite3.OPEN_READONLY,(err) => {
 const sql = sqlQuery(action); // this function takes the action and translate it into a query: please see the function definition
 db.all(sql,[],(err,rows) => {
     if(err) throw err;
-    rows.forEach(function (row) {
+    rows.forEach((row) => {
         console.log(row);
     })
 })

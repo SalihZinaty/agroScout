@@ -1,23 +1,23 @@
-const express = require('express')
-const readline = require('readline-sync');
-const sqlite3 = require('sqlite3').verbose();
-const sqlQuery = require('./sqlQuery');
+var express = require('express')
+var readline = require('readline-sync');
+var sqlite3 = require('sqlite3').verbose();
+var sqlQuery = require('./sqlQuery');
 
-const app = express();
+var app = express();
 // ~~~~~~~~~~~~~~~~~~~~~ User Inputs ~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 //getting the file path
-const filename = readline.question('Enter the file path: ');
+var filename = readline.question('Enter the file path: ');
 
 //getting the action needed on the DB from the user
-const action = readline.question('Enter The Desired Action: (MIN,MAX,AVG): ');
+var action = readline.question('Enter The Desired Action: (MIN,MAX,AVG): ');
 action.toUpperCase();
 while(action !=='MIN' && action !== 'MAX' && action !== 'AVG'){
     action = readline.question('Enter one of these actions: MIN, MAX, AVG: ');
     action.toUpperCase();
 }
 // ~~~~~~~~~~~~~~~~~~~ Started Working on the DB ~~~~~~~~~~~~~~~ //
-const db = new sqlite3.Database(filename,sqlite3.OPEN_READONLY,(err) => {
+var db = new sqlite3.Database(filename,sqlite3.OPEN_READONLY,function (err) {
     if(err) {
         return console.error(err.message); // if the file doesn't exist or curropted 
     }
@@ -25,8 +25,8 @@ const db = new sqlite3.Database(filename,sqlite3.OPEN_READONLY,(err) => {
 })
 
 
-const sql = sqlQuery(action); // this function takes the action and translate it into a query: please see the function definition
-db.all(sql,[],(err,rows) => {
+var sql = sqlQuery(action); // this function takes the action and translate it into a query: please see the function definition
+db.all(sql,[],function (err,rows) {
     if(err) throw err;
     rows.forEach(function (row) {
         console.log(row);
@@ -34,7 +34,7 @@ db.all(sql,[],(err,rows) => {
 })
 
 // ~~~~~~~~~~~~~~~~~~~~~~ Closing the DB Connection ~~~~~~~~~~~~~~~ //
-db.close((err) => {
+db.close(function (err) {
     if(err){
         return console.error(err.message);
     }
